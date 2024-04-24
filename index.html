@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steen, papier, schaar</title>
+</head>
+<body>
+    <h1>Steen, papier, schaar</h1>
+    <div>
+        <button id="steen">Steen</button>
+        <button id="papier">Papier</button>
+        <button id="schaar">Schaar</button>
+    </div>
+    <div>
+        <h2>Jouw keuze:</h2>
+        <span id="humanChoice"></span>
+    </div>
+    <div>
+        <h2>Computer's keuze:</h2>
+        <span id="computerChoice"></span>
+    </div>
+    <div>
+        <h2>Winsten:</h2>
+        <p>Jij: <span id="playerWins">0</span></p>
+        <p>Computer: <span id="computerWins">0</span></p>
+    </div>
+    <div>
+        <h2>Streak:</h2>
+        <p>Huidige: <span id="currentStreak">0</span></p>
+        <p>Hoogste: <span id="highestStreak">0</span></p>
+    </div>
+
+    <script>
+        const buttons = document.querySelectorAll("button");
+        const humanOutput = document.querySelector("#humanChoice");
+        const computerOutput = document.querySelector("#computerChoice");
+        const playerWinsOutput = document.querySelector("#playerWins");
+        const computerWinsOutput = document.querySelector("#computerWins");
+        const currentStreakOutput = document.querySelector("#currentStreak");
+        const highestStreakOutput = document.querySelector("#highestStreak");
+
+        let humanChoice;
+        let computerChoice;
+        let playerWins = 0;
+        let computerWins = 0;
+        let currentStreak = 0;
+        let highestStreak = 0;
+
+        buttons.forEach(button => {
+            button.addEventListener("click", function() {
+                humanChoice = button.textContent.toLowerCase();
+                humanOutput.textContent = "Jouw keuze: " + humanChoice;
+                generateComputerChoice();
+                determineWinner();
+            });
+        });
+
+        function generateComputerChoice() {
+            const choices = ["steen", "papier", "schaar"];
+            const randomIndex = Math.floor(Math.random() * 3);
+            computerChoice = choices[randomIndex];
+            computerOutput.textContent = "Computer's keuze: " + computerChoice;
+        }
+
+        function determineWinner() {
+            switch (humanChoice) {
+                case "steen":
+                    switch (computerChoice) {
+                        case "steen":
+                            alert("Gelijkspel!");
+                            resetStreak();
+                            break;
+                        case "papier":
+                            computerWins++;
+                            computerWinsOutput.textContent = computerWins;
+                            alert("Computer wint!");
+                            resetStreak();
+                            break;
+                        case "schaar":
+                            playerWins++;
+                            playerWinsOutput.textContent = playerWins;
+                            alert("Jij wint!");
+                            increaseStreak();
+                            break;
+                    }
+                    break;
+                case "papier":
+                    switch (computerChoice) {
+                        case "steen":
+                            playerWins++;
+                            playerWinsOutput.textContent = playerWins;
+                            alert("Jij wint!");
+                            increaseStreak();
+                            break;
+                        case "papier":
+                            alert("Gelijkspel!");
+                            resetStreak();
+                            break;
+                        case "schaar":
+                            computerWins++;
+                            computerWinsOutput.textContent = computerWins;
+                            alert("Computer wint!");
+                            resetStreak();
+                            break;
+                    }
+                    break;
+                case "schaar":
+                    switch (computerChoice) {
+                        case "steen":
+                            computerWins++;
+                            computerWinsOutput.textContent = computerWins;
+                            alert("Computer wint!");
+                            resetStreak();
+                            break;
+                        case "papier":
+                            playerWins++;
+                            playerWinsOutput.textContent = playerWins;
+                            alert("Jij wint!");
+                            increaseStreak();
+                            break;
+                        case "schaar":
+                            alert("Gelijkspel!");
+                            resetStreak();
+                            break;
+                    }
+                    break;
+            }
+        }
+
+        function increaseStreak() {
+            currentStreak++;
+            currentStreakOutput.textContent = currentStreak;
+            if (currentStreak > highestStreak) {
+                highestStreak = currentStreak;
+                highestStreakOutput.textContent = highestStreak;
+            }
+        }
+
+        function resetStreak() {
+            currentStreak = 0;
+            currentStreakOutput.textContent = currentStreak;
+        }
+    </script>
+</body>
+</html>
